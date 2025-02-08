@@ -1,0 +1,24 @@
+version: '3.1'
+services:    
+  mongo:
+    image: 'mongo:5.0.9'
+    restart: always
+#    network_mode: "host"
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: nosql
+      MONGO_INITDB_ROOT_PASSWORD: nosql
+  jupyter:
+    image: 'jupyterhub/singleuser:4.0' 
+    restart: always
+#    network_mode: "host"
+    ports:
+      - "8889:8888"
+    environment:
+      - JUPYTER_LAB_ENABLE=yes
+      - GRANT_SUDO=yes
+    user: root  
+    volumes: 
+      - "./work:/home/jovyan/work"
+    entrypoint: bash -c "start-notebook.sh --NotebookApp.token=''"
